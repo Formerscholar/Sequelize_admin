@@ -71,6 +71,37 @@ module.exports = {
       order: [['id', 'DESC']],
       where,
     })
-    res.json({ data })
+
+    next()
+  },
+  async getItemByPage(req, res, next) {
+    try {
+      let { page = 1 } = req.body
+      ~~page < 1 ? 1 : ~~page
+
+      const data = await db.Article.findAll({
+        order: [['id', 'DESC']],
+        offset: (page - 1) * 2,
+        limit: 2,
+      })
+      req.data = data
+    } catch (error) {
+      req.data = error
+    }
+    next()
+  },
+  async getItemComment(req, res, next) {
+    let { id = 1 } = req.body
+    try {
+      const data = await db.Article.findOne({
+        where: { id },
+        include: [db.Comment],
+        limit: 1,
+      })
+      req.data = data
+    } catch (error) {
+      req.data = error
+    }
+    next()
   },
 }

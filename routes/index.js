@@ -6,7 +6,9 @@ const {
   getlistById,
   updateItem,
   deleteItem,
-  searchItem
+  searchItem,
+  getItemByPage,
+  getItemComment
 } = require('../middleware/article')
 
 router.get('/', getlist, (req, res, next) => {
@@ -39,4 +41,14 @@ router.post('/search', searchItem, (req, res, next) => {
   res.json({ data })
 })
 
+router.post('/listpage', getItemByPage, (req, res, next) => {
+  const { data } = req
+  res.json({ data })
+})
+
+
+router.post('/itemComment', getItemComment, (req, res, next) => {
+  const { data } = req
+  res.json({ data })
+})
 module.exports = router
